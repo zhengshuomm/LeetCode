@@ -1,1 +1,3 @@
-# LeetCode
+# LintCode
+
+Jiuzhang System Design
