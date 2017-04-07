@@ -29,7 +29,8 @@ public class LZW {
 
         String pre = new String();
         String pre_with_cur = new String();
-        for (char cur : data.toCharArray()) {
+        for (int i = 0 ; i < data.length(); i ++) {
+			char cur = data.charAt(i);
             pre_with_cur = pre + cur;
             if (dictionary.containsKey(pre_with_cur)) {
                 pre = pre_with_cur;
@@ -40,7 +41,7 @@ public class LZW {
             }
         }
 
-        //output for the last character
+        //output for the last character, prevent scnario like "AAAAAAAA"
         if(dictionary.containsKey(pre)){
             encodedData.append(_intTo12BitBinary(dictionary.get(pre)));
         }
