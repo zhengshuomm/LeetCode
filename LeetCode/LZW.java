@@ -1,12 +1,12 @@
-import java.util.*;
-
+import java.util.*;                     // import whatever needed
+					// delete this line, format the file first and then let me see it.
 
 public class LZW {
 	private static final int CHAR_SIZE = 256;  //number of chars
 	private static final int DICT_SIZE = 4096;  //number of dictionary size
 	private static final int CODE_SIZE = 12;   //number of bits for one codeword
 	
-	private LZW(){}
+	private LZW(){}      // why need this
 	
 	public static String encode(String data) {
 		StringBuilder output = new StringBuilder();
