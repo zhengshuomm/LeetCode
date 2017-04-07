@@ -1,8 +1,11 @@
 /**
  * Created by swang on 4/7/2017.
+ * @author: Siyang Wang
  */
 import java.util.Map;
 import java.util.HashMap;
+
+// Use ctrl+shift+F to format the file in Eclipse.
 
 public class LZW {
 
@@ -14,7 +17,7 @@ public class LZW {
     /*
     * This is the encode function of LZW.
     *
-    * @param data -- A string that needed to be encoded
+    * @param data -- A string that needs to be encoded
     * @output -- A String of encodedData, each codeword should be 12 bits long in binary
     */
     public static String encode(String data) {
@@ -27,10 +30,10 @@ public class LZW {
             dictionary.put(Character.toString((char) i), i);
         }
 
-        String pre = new String();
-        String pre_with_cur = new String();
+        String pre = new String();                       // ???? Why new String().
+        String pre_with_cur = new String();              // Ditto
         for (int i = 0 ; i < data.length(); i ++) {
-			char cur = data.charAt(i);
+			char cur = data.charAt(i);       // line?
             pre_with_cur = pre + cur;
             if (dictionary.containsKey(pre_with_cur)) {
                 pre = pre_with_cur;
@@ -40,7 +43,11 @@ public class LZW {
                 pre = String.valueOf(cur);
             }
         }
-
+        
+	// Follow my previous comment.
+	// For (int i = 0 ; i <= data.length(); i ++) {
+        //      char cur = i == data.length() ? data.charAt(i) : '';
+        //}
         //output for the last character, prevent scnario like "AAAAAAAA"
         if(dictionary.containsKey(pre)){
             encodedData.append(_intTo12BitBinary(dictionary.get(pre)));
@@ -53,7 +60,7 @@ public class LZW {
 
     /*
     * This is the decode function of LZW.
-    * @param data -- A string that needed to be decoded.
+    * @param data -- A string that needs to be decoded.
     * @output -- A String
     */
     public static String decode(String data){
@@ -65,7 +72,7 @@ public class LZW {
         for(int i = 0 ; i < CHAR_SIZE; i ++){
             dic.put(i, Character.toString((char) i));
         }
-        String cur = "";
+        String cur = "";                 
         String pre = "";
 
         for(int i = 0 ; i < data.length() ; i = i + CODE_SIZE){
@@ -75,7 +82,7 @@ public class LZW {
             }else if (code == pos_dict){
                 cur = cur + cur.charAt(0);
             }
-            if(!pre.equals("")){
+            if(!pre.equals("")){              // pre.isEmpty()
                 dic.put(pos_dict++, pre + cur.charAt(0));
             }
             decodedData.append(cur);
@@ -84,6 +91,7 @@ public class LZW {
         return decodedData.toString();
     }
 
+	    // Function name. Don't you _ for start. binaryToInt.
     /*
     * This is the function to covert a binary string to an integer number
     * @param data -- A string of binary numbers, start position, end position
@@ -98,7 +106,9 @@ public class LZW {
         }
         return result;
     }
-
+    
+	
+    // Function name. Don't you _ for start. intToBinary.
     /*
     * This is the function to convert an integer number to a binary string
     * @param data -- An integer number
@@ -116,21 +126,17 @@ public class LZW {
         return result;
     }
 
-
+    // Do not need this main function. Write unit test in another file. https://www.tutorialspoint.com/junit/junit_test_framework.html
+    // Just need to verify given a input, the result is expected. Using assertEquals.
+    // Write three test cases.
     public static void main(String[] args) {
         LZW lzw = new LZW();
 
-
         String en = lzw.encode("ASDFAWEVA;J2310988HKJLJKH/VASDFASDFADSFAEFWFASDFHAoiejfp2938hflskjdpwo3rhq3jakfnlcnz,;OWEIFNOEKJFHOAWIEUHFAWIUEFHWIUEFH");
-
-
         System.out.println(en);
 
-        String de = lzw.decode(en);
-
+	String de = lzw.decode(en);
         System.out.print(de);
-
-
     }
 
 }
