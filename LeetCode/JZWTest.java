@@ -17,14 +17,16 @@ public class LZWTest {
 	}
 
 	@Test
-	public void testEncodeSameSequence() {
-		String data = "AAAAA";
-		assertEquals("000001000001000100000000000100000000", lzw.encode(data));
+	public void testEncode() {
+		String data = "ABCDEFG";
+		assertEquals(
+				"000001000001000001000010000001000011000001000100000001000101000001000110000001000111",
+				lzw.encode(data));
 	}
 
 	@Test
-	public void testEncode() {
-		String data = "ABCDEFG";
+	public void testEncodeSameSequence() {
+		String data = "AAAAA";
 		assertEquals("000001000001000100000000000100000000", lzw.encode(data));
 	}
 
@@ -34,7 +36,7 @@ public class LZWTest {
 		assertEquals("ZAQWSXXSWQAZ", lzw.decode(data));
 	}
 
-	@Test(expected = RuntimeException.class)
+	@Test(expected = IllegalArgumentException.class)
 	// INVALIDARGUMENT.
 	public void testInvalidDecodeData() throws Exception {
 		lzw.decode("01234");

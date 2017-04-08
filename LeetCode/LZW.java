@@ -21,7 +21,7 @@ public class LZW {
 	 */
 	public String encode(String data) {
 		StringBuilder encodedData = new StringBuilder();
-		int pos_dict = CHAR_SIZE;
+		int posDic = CHAR_SIZE;
 
 		// Establish dictionary for all the 256 basic characters.
 		Map<String, Integer> dictionary = new HashMap<String, Integer>();
@@ -29,15 +29,17 @@ public class LZW {
 			dictionary.put(Character.toString((char) i), i);
 		}
 
+		// Previous sequence
 		String pre = "";
-		String pre_with_cur = "";
+		// Previous + current character
+		String preWithCur = "";
 		for (int i = 0; i < data.length(); i++) {
 			char cur = data.charAt(i);
-			pre_with_cur = pre + cur;
-			if (dictionary.containsKey(pre_with_cur)) {
-				pre = pre_with_cur;
+			preWithCur = pre + cur;
+			if (dictionary.containsKey(preWithCur)) {
+				pre = preWithCur;
 			} else {
-				dictionary.put(pre_with_cur, pos_dict++);
+				dictionary.put(preWithCur, posDic++);
 				encodedData.append(intToBinary(dictionary.get(pre)));
 				pre = String.valueOf(cur);
 			}
@@ -61,28 +63,29 @@ public class LZW {
 	public String decode(String data) throws Exception {
 		// Validate input, throw a invalid argument exception if not valid.
 		if (!validateCodeWord(data)) {
-			throw new RuntimeException("Illegal code word");
+			throw new IllegalArgumentException("Illegal code word");
 		}
 		StringBuilder decodedData = new StringBuilder();
-		int pos_dict = CHAR_SIZE;
+		int posDic = CHAR_SIZE;
 
 		// Establish dictionary for all the 256 basic characters.
 		HashMap<Integer, String> dic = new HashMap<Integer, String>();
 		for (int i = 0; i < CHAR_SIZE; i++) {
 			dic.put(i, Character.toString((char) i));
 		}
+		// Current character
 		String cur = "";
+		// Previous sequence
 		String pre = "";
-
 		for (int i = 0; i < data.length(); i = i + CODE_SIZE) {
 			int code = binaryToInt(data, i, i + CODE_SIZE);
 			if (dic.containsKey(code)) {
 				cur = dic.get(code);
-			} else if (code == pos_dict) {
+			} else if (code == posDic) {
 				cur += cur.charAt(0);
 			}
 			if (!pre.isEmpty()) {
-				dic.put(pos_dict++, pre + cur.charAt(0));
+				dic.put(posDic++, pre + cur.charAt(0));
 			}
 			decodedData.append(cur);
 			pre = cur;
