@@ -23,14 +23,14 @@ public class LZW {
 		StringBuilder encodedData = new StringBuilder();
 		int pos_dict = CHAR_SIZE;
 
-		// Build dictionary for all the basic characters
+		// Establish dictionary for all the 256 basic characters.
 		Map<String, Integer> dictionary = new HashMap<String, Integer>();
 		for (int i = 0; i < CHAR_SIZE; i++) {
 			dictionary.put(Character.toString((char) i), i);
 		}
 
-		String pre = new String();
-		String pre_with_cur = new String();
+		String pre = "";
+		String pre_with_cur = "";
 		for (int i = 0; i < data.length(); i++) {
 			char cur = data.charAt(i);
 			pre_with_cur = pre + cur;
@@ -43,7 +43,7 @@ public class LZW {
 			}
 		}
 
-		// output for the last character, prevent scenario like "AAAAAAAA"
+		// Output for the last character, prevent scenario like "AAAAAAAA".
 		if (dictionary.containsKey(pre)) {
 			encodedData.append(intToBinary(dictionary.get(pre)));
 		}
@@ -59,14 +59,14 @@ public class LZW {
 	 * @output -- A String
 	 */
 	public String decode(String data) throws Exception {
-		// validate string, if not valid, will throw a runtime error
+		// Validate input, throw a invalid argument exception if not valid.
 		if (!validateCodeWord(data)) {
 			throw new RuntimeException("Illegal code word");
 		}
 		StringBuilder decodedData = new StringBuilder();
 		int pos_dict = CHAR_SIZE;
 
-		// Build dictionary for all the basic characters
+		// Establish dictionary for all the 256 basic characters.
 		HashMap<Integer, String> dic = new HashMap<Integer, String>();
 		for (int i = 0; i < CHAR_SIZE; i++) {
 			dic.put(i, Character.toString((char) i));
@@ -79,7 +79,7 @@ public class LZW {
 			if (dic.containsKey(code)) {
 				cur = dic.get(code);
 			} else if (code == pos_dict) {
-				cur = cur + cur.charAt(0);
+				cur += cur.charAt(0);
 			}
 			if (!pre.isEmpty()) {
 				dic.put(pos_dict++, pre + cur.charAt(0));
@@ -91,7 +91,7 @@ public class LZW {
 	}
 
 	/*
-	 * This is the function to covert a binary string to an integer number
+	 * This is the function to convert a binary string to an integer.
 	 * 
 	 * @param data -- A string of binary numbers, start position, end position
 	 * 
@@ -108,7 +108,7 @@ public class LZW {
 	}
 
 	/*
-	 * This is the function to convert an integer number to a binary string
+	 * This is the function to convert an integer number to a binary string.
 	 * 
 	 * @param data -- An integer number
 	 * 
@@ -128,11 +128,11 @@ public class LZW {
 
 	/*
 	 * This is the function to validate codeword, make sure decode string only
-	 * contains 0 and 1
+	 * contains 0 and 1.
 	 * 
 	 * @param data -- A string of codeword
 	 * 
-	 * @output -- true if valid , false if not valid 
+	 * @output -- true if valid , false if not valid
 	 * 
 	 * validation -- The string is a string only contains 0 and 1, and the
 	 * length is multiple of 12.
@@ -145,7 +145,6 @@ public class LZW {
 			if (data.charAt(i) != '0' && data.charAt(i) != '1')
 				return false;
 		}
-
 		return true;
 	}
 }
