@@ -20,18 +20,18 @@ public class LZW {
 	 * in binary
 	 */
 	public String encode(String data) {
-		StringBuilder encodedData = new StringBuilder();
-		int posDic = CHAR_SIZE;
-
 		// Establish dictionary for all the 256 basic characters.
 		Map<String, Integer> dictionary = new HashMap<String, Integer>();
 		for (int i = 0; i < CHAR_SIZE; i++) {
 			dictionary.put(Character.toString((char) i), i);
 		}
 
-		// Previous sequence
+		StringBuilder encodedData = new StringBuilder();
+		int posDic = CHAR_SIZE;
+		// A variable used to present previous sequence.
 		String pre = "";
-		// Previous + current character
+		// A variable used to present previous sequence concatenate the current
+		// character.
 		String preWithCur = "";
 		for (int i = 0; i < data.length(); i++) {
 			char cur = data.charAt(i);
@@ -62,20 +62,21 @@ public class LZW {
 	 */
 	public String decode(String data) throws Exception {
 		// Validate input, throw a invalid argument exception if not valid.
-		if (!validateCodeWord(data)) {
+		if (!isValidateCodeWord(data)) {
 			throw new IllegalArgumentException("Illegal code word");
 		}
-		StringBuilder decodedData = new StringBuilder();
-		int posDic = CHAR_SIZE;
 
 		// Establish dictionary for all the 256 basic characters.
 		HashMap<Integer, String> dic = new HashMap<Integer, String>();
 		for (int i = 0; i < CHAR_SIZE; i++) {
 			dic.put(i, Character.toString((char) i));
 		}
-		// Current character
+
+		StringBuilder decodedData = new StringBuilder();
+		int posDic = CHAR_SIZE;
+		// A variable used to present current character.
 		String cur = "";
-		// Previous sequence
+		// A variable used to present previous sequence.
 		String pre = "";
 		for (int i = 0; i < data.length(); i = i + CODE_SIZE) {
 			int code = binaryToInt(data, i, i + CODE_SIZE);
@@ -115,7 +116,7 @@ public class LZW {
 	 * 
 	 * @param data -- An integer number
 	 * 
-	 * @output -- A string of binary numbers
+	 * @output -- A String of binary numbers
 	 */
 	private StringBuilder intToBinary(int input) {
 		StringBuilder result = new StringBuilder();
@@ -130,17 +131,16 @@ public class LZW {
 	}
 
 	/*
-	 * This is the function to validate codeword, make sure decode string only
-	 * contains 0 and 1.
+	 * This is the function to determine if the data is a valid codeword
 	 * 
-	 * @param data -- A string of codeword
+	 * @param data -- A String of codeword
 	 * 
 	 * @output -- true if valid , false if not valid
 	 * 
 	 * validation -- The string is a string only contains 0 and 1, and the
 	 * length is multiple of 12.
 	 */
-	private boolean validateCodeWord(String data) {
+	private boolean isValidateCodeWord(String data) {
 		if (data == null || data.length() % CODE_SIZE != 0) {
 			return false;
 		}

@@ -8,12 +8,12 @@ public class LZWTest {
 	private LZW lzw;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		lzw = new LZW();
 	}
 
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() {
 	}
 
 	@Test
@@ -37,7 +37,6 @@ public class LZWTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	// INVALIDARGUMENT.
 	public void testInvalidDecodeData() throws Exception {
 		lzw.decode("01234");
 	}
