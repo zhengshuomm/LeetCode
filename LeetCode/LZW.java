@@ -28,9 +28,9 @@ public class LZW {
 
 		StringBuilder encodedData = new StringBuilder();
 		int posDic = CHAR_SIZE;
-		// A variable used to present previous sequence.
+		// A variable used to represent previous sequence.
 		String pre = "";
-		// A variable used to present previous sequence concatenate the current
+		// A variable used to represent previous sequence concatenate the current
 		// character.
 		String preWithCur = "";
 		for (int i = 0; i < data.length(); i++) {
@@ -74,9 +74,9 @@ public class LZW {
 
 		StringBuilder decodedData = new StringBuilder();
 		int posDic = CHAR_SIZE;
-		// A variable used to present current character.
+		// A variable used to represent current character.
 		String cur = "";
-		// A variable used to present previous sequence.
+		// A variable used to represent previous sequence.
 		String pre = "";
 		for (int i = 0; i < data.length(); i = i + CODE_SIZE) {
 			int code = binaryToInt(data, i, i + CODE_SIZE);
@@ -131,13 +131,13 @@ public class LZW {
 	}
 
 	/*
-	 * This is the function to determine if the data is a valid codeword
+	 * This is the function to determine if the data is a valid codeword.
 	 * 
 	 * @param data -- A String of codeword
 	 * 
 	 * @output -- true if valid , false if not valid
 	 * 
-	 * validation -- The string is a string only contains 0 and 1, and the
+	 * validation -- The data is a string only contains 0 and 1, and the
 	 * length is multiple of 12.
 	 */
 	private boolean isValidateCodeWord(String data) {
