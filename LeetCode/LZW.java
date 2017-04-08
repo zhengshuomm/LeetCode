@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class LZW {
 
-	// Define variables will be used.
+	// Define variables will be used
 	private static final int CHAR_SIZE = 256; // Number of chars
 	private static final int DICT_SIZE = 4096; // Number of dictionary size
 	private static final int CODE_SIZE = 12; // Number of bits for one codeword
@@ -21,23 +21,24 @@ public class LZW {
 	 */
 	public String encode(String data) {
 		StringBuilder encodedData = new StringBuilder();
-		int pos_dict = CHAR_SIZE;
+		int pos_dict = CHAR_SIZE;      // java style use pos_dict ?
 
 		// Establish dictionary for all the 256 basic characters.
 		Map<String, Integer> dictionary = new HashMap<String, Integer>();
-		for (int i = 0; i < CHAR_SIZE; i++) {
+		for (int i = 0; i < CHAR_SIZE; i ++) {
 			dictionary.put(Character.toString((char) i), i);
 		}
-
-		String pre = "";
-		String pre_with_cur = "";
-		for (int i = 0; i < data.length(); i++) {
+		
+		// Add comment to say what these two variables are.
+		String pre = "";              
+		String pre_with_cur = "";    // java style use pre_with_cur? 
+		for (int i = 0; i < data.length(); i ++) {
 			char cur = data.charAt(i);
 			pre_with_cur = pre + cur;
 			if (dictionary.containsKey(pre_with_cur)) {
 				pre = pre_with_cur;
 			} else {
-				dictionary.put(pre_with_cur, pos_dict++);
+				dictionary.put(pre_with_cur, pos_dict ++);
 				encodedData.append(intToBinary(dictionary.get(pre)));
 				pre = String.valueOf(cur);
 			}
@@ -61,19 +62,20 @@ public class LZW {
 	public String decode(String data) throws Exception {
 		// Validate input, throw a invalid argument exception if not valid.
 		if (!validateCodeWord(data)) {
-			throw new RuntimeException("Illegal code word");
+			throw new RuntimeException("Illegal code word");    // Saying AGAIN, RuntimeException-> invalidArgumentException
 		}
 		StringBuilder decodedData = new StringBuilder();
-		int pos_dict = CHAR_SIZE;
+		int pos_dict = CHAR_SIZE;                  // ditto
 
 		// Establish dictionary for all the 256 basic characters.
 		HashMap<Integer, String> dic = new HashMap<Integer, String>();
-		for (int i = 0; i < CHAR_SIZE; i++) {
+		for (int i = 0; i < CHAR_SIZE; i ++) {
 			dic.put(i, Character.toString((char) i));
 		}
+		
+		// Comment
 		String cur = "";
 		String pre = "";
-
 		for (int i = 0; i < data.length(); i = i + CODE_SIZE) {
 			int code = binaryToInt(data, i, i + CODE_SIZE);
 			if (dic.containsKey(code)) {
@@ -82,7 +84,7 @@ public class LZW {
 				cur += cur.charAt(0);
 			}
 			if (!pre.isEmpty()) {
-				dic.put(pos_dict++, pre + cur.charAt(0));
+				dic.put(pos_dict ++, pre + cur.charAt(0));
 			}
 			decodedData.append(cur);
 			pre = cur;
@@ -100,7 +102,7 @@ public class LZW {
 	private int binaryToInt(String input, int start, int end) {
 		int result = 0;
 		int pos = 1;
-		for (int i = end - 1; i >= start; i--) {
+		for (int i = end - 1; i >= start; i --) {
 			result += pos * (input.charAt(i) - '0');
 			pos = (pos << 1);
 		}
@@ -141,7 +143,7 @@ public class LZW {
 		if (data == null || data.length() % CODE_SIZE != 0) {
 			return false;
 		}
-		for (int i = 0; i < data.length(); i++) {
+		for (int i = 0; i < data.length(); i ++) {
 			if (data.charAt(i) != '0' && data.charAt(i) != '1')
 				return false;
 		}
