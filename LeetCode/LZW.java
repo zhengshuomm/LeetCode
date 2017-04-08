@@ -131,7 +131,7 @@ public class LZW {
 	}
 
 	/*
-	 * This is the function to determine if the data is a valid codeword
+	 * This is the function to determine if the data is a valid codeword.
 	 * 
 	 * @param data -- A String of codeword
 	 * 
