@@ -20,15 +20,14 @@ public class LZW {
 	 * in binary
 	 */
 	public String encode(String data) {
-		StringBuilder encodedData = new StringBuilder();
-		int posDic = CHAR_SIZE;
-
 		// Establish dictionary for all the 256 basic characters.
 		Map<String, Integer> dictionary = new HashMap<String, Integer>();
 		for (int i = 0; i < CHAR_SIZE; i++) {
 			dictionary.put(Character.toString((char) i), i);
 		}
 
+		StringBuilder encodedData = new StringBuilder();
+		int posDic = CHAR_SIZE;
 		// Previous sequence
 		String pre = "";
 		// Previous + current character
@@ -65,14 +64,15 @@ public class LZW {
 		if (!validateCodeWord(data)) {
 			throw new IllegalArgumentException("Illegal code word");
 		}
-		StringBuilder decodedData = new StringBuilder();
-		int posDic = CHAR_SIZE;
 
 		// Establish dictionary for all the 256 basic characters.
 		HashMap<Integer, String> dic = new HashMap<Integer, String>();
 		for (int i = 0; i < CHAR_SIZE; i++) {
 			dic.put(i, Character.toString((char) i));
 		}
+		
+		StringBuilder decodedData = new StringBuilder();
+		int posDic = CHAR_SIZE;
 		// Current character
 		String cur = "";
 		// Previous sequence
