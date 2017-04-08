@@ -5,10 +5,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class LZWTest {
-	private static LZW lzw = new LZW();
+	private LZW lzw;
 
 	@Before
 	public void setUp() throws Exception {
+		lzw = new LZW();
 	}
 
 	@After
@@ -16,8 +17,14 @@ public class LZWTest {
 	}
 
 	@Test
-	public void testEncode() {
+	public void testEncodeSameSequence() {
 		String data = "AAAAA";
+		assertEquals("000001000001000100000000000100000000", lzw.encode(data));
+	}
+
+	@Test
+	public void testEncode() {
+		String data = "ABCDEFG";
 		assertEquals("000001000001000100000000000100000000", lzw.encode(data));
 	}
 
@@ -28,12 +35,13 @@ public class LZWTest {
 	}
 
 	@Test(expected = RuntimeException.class)
-	public void testInvalidDecode() throws Exception {
+	// INVALIDARGUMENT.
+	public void testInvalidDecodeData() throws Exception {
 		lzw.decode("01234");
 	}
 
 	@Test
-	public void testEncodeDecode() throws Exception {
+	public void testEncodeAndDecode() throws Exception {
 		String data = "ABCABCABC";
 		String encode_data = lzw.encode(data);
 		assertEquals(data, lzw.decode(encode_data));
